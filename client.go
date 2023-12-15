@@ -102,7 +102,7 @@ func (f *BackendFactory) initPublisher(ctx context.Context, remote *config.Backe
 			return nil, err
 		}
 
-		var data map[string]interface{}
+		var data = make(map[string]interface{}, 1)
 		data["MessageId"] = msg.LoggableID
 
 		return &proxy.Response{IsComplete: true, Data: data}, nil
