@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"io"
 	"io/ioutil"
 
@@ -77,6 +78,12 @@ func (f *BackendFactory) initPublisher(ctx context.Context, remote *config.Backe
 		return proxy.NoopProxy, err
 	}
 
+	var cl sqs.Client
+
+	if t.As(cl) == false {
+		f.logger.Error("Kaputt")
+	}
+
 	f.logger.Debug(logPrefix, "Publisher initialized sucessfully")
 
 	go func() {
@@ -93,6 +100,7 @@ func (f *BackendFactory) initPublisher(ctx context.Context, remote *config.Backe
 		for k, vs := range r.Headers {
 			headers[k] = vs[0]
 		}
+
 		msg := &pubsub.Message{
 			Metadata: headers,
 			Body:     body,
@@ -102,8 +110,9 @@ func (f *BackendFactory) initPublisher(ctx context.Context, remote *config.Backe
 			return nil, err
 		}
 
-		var data = make(map[string]interface{}, 2)
-		data["Result"] = "Sent"
+		data := map[string]interface{}{
+			"Result": "Sent",
+		}
 
 		return &proxy.Response{IsComplete: true, Data: data}, nil
 	}, nil

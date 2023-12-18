@@ -1,9 +1,9 @@
 module github.com/wolframite/krakend-pubsub/v2
 
-go 1.20
+go 1.21.5
 
 require (
-	github.com/luraproject/lura/v2 v2.0.5
+	github.com/luraproject/lura/v2 v2.4.2
 	gocloud.dev v0.35.0
 	gocloud.dev/pubsub/kafkapubsub v0.35.0
 	gocloud.dev/pubsub/natspubsub v0.35.0
