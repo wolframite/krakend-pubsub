@@ -5,7 +5,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"io"
 	"io/ioutil"
 
@@ -76,12 +75,6 @@ func (f *BackendFactory) initPublisher(ctx context.Context, remote *config.Backe
 	if err != nil {
 		f.logger.Error(fmt.Sprintf(logPrefix, err.Error()))
 		return proxy.NoopProxy, err
-	}
-
-	var cl sqs.Client
-
-	if t.As(cl) == false {
-		f.logger.Error("Kaputt")
 	}
 
 	f.logger.Debug(logPrefix, "Publisher initialized sucessfully")
